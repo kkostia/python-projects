@@ -3,6 +3,22 @@ from tkinter import messagebox
 from random import choice, randint, shuffle
 import pyperclip
 from json import *
+# ---------------------------- SEARCH FUNCTION ---------------------------------- #
+def find_password():
+    webiste = website_input.get()
+    try:
+        with open("data.json", "r") as f: 
+            data = load(f)
+    except FileNotFoundError:
+        messagebox.showerror(title="Errorr", message="File not found")
+        return
+    
+    if webiste in data:
+        login = data[webiste]["email"]
+        password = data[webiste]["password"]
+        messagebox.showinfo(title="Account found!", message=f"Website: {webiste}\nLogin is: {login}\nPassword is: {password}")
+    else:
+        messagebox.showerror(title="Error", message=f"No details for {webiste} found")
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 def generate_password():
     letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z']
@@ -70,11 +86,11 @@ password_label = Label(text="Password:", font="Arial")
 password_label.grid(row=3, column=0, padx=5, pady=5)
 
 ## Inputs
-webiste = website_input = Entry(width=35)
-website_input.grid(row=1, column=1, columnspan=2, pady=5)
+webiste = website_input = Entry(width=21)
+website_input.grid(row=1, column=1, pady=5)
 website_input.focus()
 
-login = login_input = Entry(width=35)
+login = login_input = Entry(width=55)
 login_input.grid(row=2, column=1, columnspan=2, pady=5)
 login_input.insert(0, "kospanasenko2@gmail.com")
 
@@ -82,12 +98,14 @@ password = password_input = Entry(width=21)  # Adjusted width
 password_input.grid(row=3, column=1, pady=5)
 
 ## Buttons
-generate_button = Button(text="Generate password",command=generate_password)
+generate_button = Button(text="Generate password",command=generate_password, width=25)
 generate_button.grid(row=3, column=2, pady=5)
 
 add_button = Button(text="Add", width=36, command=save)
 add_button.grid(row=4, column=1, columnspan=2, pady=5)
 
+search_button = Button(text="Search", width=25, command=find_password)
+search_button.grid(row=1, column=2, pady=5)
 
 
 
